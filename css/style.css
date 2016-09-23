@@ -1,0 +1,23 @@
+body, html {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+  background-color: white;
+}
+
+body {
+  height: inherit;
+  overflow: hidden;
+}
+
+h1, p {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+div p {
+  padding: 20px;
+  background-color: rgba(0,0,0,0.2);
+}
