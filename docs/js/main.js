@@ -42,7 +42,7 @@ function vr_function() {
         console.log('Speech recognition error detected: ' + event.error);
         console.log('Additional information: ' + event.message);
         if(flag_speech === 0){
-            console.log('start again');
+            console.log('start service again');
             vr_function();
         }
     };
@@ -75,10 +75,12 @@ function vr_function() {
 
     flag_speech = 0;
     recognition.start();
+    console.log('start service');
     $("#state").text("喋ってください");
 }
 
 function stop() {
     recognition.stop();
+    console.log('stop service');
     $("#state").text("停止中");
 }
