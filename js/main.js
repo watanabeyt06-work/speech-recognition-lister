@@ -4,10 +4,14 @@ var filterVocab = function() {
     var vocabs = ['じゃがいも','ジャガイモ', 'ニンジン', '人参', 'にんじん', 'たまねぎ', '玉ねぎ', '玉葱', 'タマネギ'];
     return _.filter(vocabs, function(vocab) {
         var testRegex = new RegExp(vocab, 'i');
-        console.log(testRegex.test($('#recognizedText').val()));
-        return testRegex.test($('#recognizedText').val());
+        return testRegex.test($('#hidden-field').val());
     });
 };
+
+var appendVocab = function(item) {
+    $('#list').append('<li>' + item + '</li>');
+};
+
 var flag_speech = 0;
 function vr_function() {
     'use strict';
@@ -29,14 +33,14 @@ function vr_function() {
 
     //マッチする認識が無い
     recognition.onnomatch = function(){
-        $("#recognizedText").text("もう一度試してください");
+        console.log("もう一度試してください");
     };
     //エラー
     recognition.onerror= function(event){
         console.log('Speech recognition error detected: ' + event.error);
         console.log('Additional information: ' + event.message);
         if(flag_speech === 0){
-            console.log('again');
+            console.log('start again');
             vr_function();
         }
     };
@@ -48,18 +52,20 @@ function vr_function() {
         for (var i = event.resultIndex; i<results.length; i++){
             //認識の最終結果
             if(results[i].isFinal){
-                $("#recognizedText").text(results[i][0].transcript);
+                $("#recognizedText").val(results[i][0].transcript);
+                $('#hidden-field').val(results[i][0].transcript);
                 if(matched.length > 0){
-                    _.each(matched, function(item) {
-                        $('#list').append('<li>' + item + '</li>');
-                    });
-                    $('#recognizedText').text('');
+                    // append item to the list
+                    _.each(matched, appendVocab(item));
+
+                    // delete hedden field when the vocaburaly matched
+                    $('#hidden-field').val('');
                 }
                 vr_function();
             }
             //認識の中間結果
             else{
-                $("#recognizedText").text(results[i][0].transcript);
+                $("#recognizedText").val(results[i][0].transcript);
                 flag_speech = 1;
             }
         }
