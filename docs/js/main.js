@@ -13,8 +13,8 @@ var appendVocab = function(item) {
 };
 
 // initial setting
-window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
-var recognition = new webkitSpeechRecognition();
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+var recognition = new SpeachRecognition();
 recognition.lang = 'ja-JP';
 recognition.interimResults = true;
 recognition.continuous = true;
