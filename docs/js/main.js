@@ -12,14 +12,16 @@ var appendVocab = function(item) {
     $('#list').append('<li>' + item + '</li>');
 };
 
+// initial setting
+window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+var recognition = new webkitSpeechRecognition();
+recognition.lang = 'ja-JP';
+recognition.interimResults = true;
+recognition.continuous = true;
+
 var flag_speech = 0;
 function vr_function() {
     'use strict';
-    window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
-    var recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-    recognition.interimResults = true;
-    recognition.continuous = true;
 
     recognition.onsoundstart = function() {
         $("#state").text("音声認識中");
@@ -72,6 +74,11 @@ function vr_function() {
     };
 
     flag_speech = 0;
-    $("#state").text("喋ってください");
     recognition.start();
+    $("#state").text("喋ってください");
+}
+
+function stop() {
+    recognition.stop();
+    $("#state").text("停止中");
 }
