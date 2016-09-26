@@ -17,12 +17,12 @@ function vr_function() {
     'use strict';
     window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
     var recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja';
+    recognition.lang = 'ja-JP';
     recognition.interimResults = true;
     recognition.continuous = true;
 
     recognition.onsoundstart = function() {
-        $("#state").text("認識中");
+        $("#state").text("音声認識中");
     };
 
     recognition.onsoundend = function() {
@@ -72,6 +72,6 @@ function vr_function() {
     };
 
     flag_speech = 0;
-    $("#state").text("開始");
+    $("#state").text("喋ってください");
     recognition.start();
 }
