@@ -14,7 +14,7 @@ var appendVocab = function(item) {
 
 // initial setting
 var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-var recognition = new SpeachRecognition();
+var recognition = new SpeechRecognition();
 recognition.lang = 'ja-JP';
 recognition.interimResults = true;
 recognition.continuous = true;
