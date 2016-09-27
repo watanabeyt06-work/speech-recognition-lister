@@ -16,17 +16,25 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     </head>
     <body>
-        <section id="speach-recog">
-            <input type="button" value="音認開始" onClick="vr_function();">
-            <input type="button" value="停止" onClick="stop();">
-            <div id="state">停止中</div>
-            <textarea id="recognizedText" cols="100" rows="10"></textarea>
+        <section>
+            <div id="speech-recog">
+                <span>
+                    ■■■■■■■■■■■■■■■■音声認識プログラム■■■■■■■■■■■■■■■■■■■■■
+                </span>
+                <input type="button" value="音認開始" onClick="vr_function();">
+                <input type="button" value="停止" onClick="stop();">
+                <div id="state">停止中</div>
+                <textarea id="recognizedText" cols="100" rows="10"></textarea>
+            </div>
         </section>
         <input type="hidden" id="hidden-field" />
         <section id="list-result">
-            <div>
-                <ul id="list">
-                </ul>
+            <div id="order">
+                <span>-----------------注文書-------------------</span>
+                <div>
+                    <ul id="list">
+                    </ul>
+                </div>
             </div>
         </section>
         <!-- Place your content here -->
