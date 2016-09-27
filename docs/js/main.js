@@ -1,15 +1,10 @@
-
-var filterVocab = function() {
+var filterVocab = function(value) {
     'use strict';
     var vocabs = ['じゃがいも','ジャガイモ', 'ニンジン', '人参', 'にんじん', 'たまねぎ', '玉ねぎ', '玉葱', 'タマネギ'];
     return _.filter(vocabs, function(vocab) {
         var testRegex = new RegExp(vocab, 'i');
-        return testRegex.test($('#hidden-field').val());
+        return testRegex.test(value);
     });
-};
-
-var appendVocab = function(item) {
-    $('#list').append('<li>' + item + '</li>');
 };
 
 // initial setting
@@ -17,9 +12,9 @@ var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 recognition.lang = 'ja-JP';
 recognition.interimResults = true;
-recognition.continuous = true;
+recognition.continuous = false;
 
-var flag_speech = 0;
+var manualStopFlg = false;
 function vr_function() {
     'use strict';
 
@@ -28,8 +23,7 @@ function vr_function() {
     };
 
     recognition.onsoundend = function() {
-        $("#state").text("停止中");
-        vr_function();
+        $("#state").text("音声終了");
     };
 
 
@@ -41,45 +35,52 @@ function vr_function() {
     recognition.onerror= function(event){
         console.log('Speech recognition error detected: ' + event.error);
         console.log('Additional information: ' + event.message);
-        if(flag_speech === 0){
-            console.log('start service again');
+        console.log('start service again');
+    };
+
+    recognition.onend = function() {
+        if(!manualStopFlg) {
             vr_function();
+        } else {
+            $("#state").text("停止中");
         }
     };
 
     //認識が終了したときのイベント
     recognition.onresult = function(event){
         var results = event.results;
-        var matched = filterVocab();
         for (var i = event.resultIndex; i<results.length; i++){
+
             //認識の最終結果
             if(results[i].isFinal){
-                $("#recognizedText").val(results[i][0].transcript);
-                $('#hidden-field').val(results[i][0].transcript);
-                if(matched.length > 0){
-                    // append item to the list
-                    _.each(matched, appendVocab(item));
+                $("#recognizedText").val(results[0][0].transcript);
+                $('#hidden-field').val(results[0][0].transcript);
 
-                    // delete hedden field when the vocaburaly matched
+                var matched = filterVocab($('#hidden-field').val());
+                if(matched.length > 0){
+                    _.each(matched, function(item){
+                            $('#list').append('<li>' + item + '</li>');
+                    });
                     $('#hidden-field').val('');
                 }
-                vr_function();
             }
             //認識の中間結果
             else{
                 $("#recognizedText").val(results[i][0].transcript);
-                flag_speech = 1;
             }
         }
     };
 
-    flag_speech = 0;
+    manualStopFlg = false;
     recognition.start();
     console.log('start service');
     $("#state").text("喋ってください");
 }
 
 function stop() {
+    'use strict';
+
+    manualStopFlg = true;
     recognition.stop();
     console.log('stop service');
     $("#state").text("停止中");
