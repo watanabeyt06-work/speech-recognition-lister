@@ -39,10 +39,13 @@ function vr_function() {
     };
 
     recognition.onend = function() {
-        if(!manualStopFlg) {
-            vr_function();
-        } else {
+        if(manualStopFlg) {
+            $("#recognizedText").val('');
+            $('#hidden-field').val('');
+            $('ul').empty();
             $("#state").text("停止中");
+        } else {
+            vr_function();
         }
     };
 
